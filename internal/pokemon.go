@@ -29,40 +29,31 @@ type TypeInfo struct {
 	Url  string `json:"url"`
 }
 
-func GetPokemon(cCtx *cli.Context) error {
+func GetPokemon(cCtx *cli.Context) (*Pokemon, error) {
 	resp, err := http.Get(fmt.Sprintf("https://pokeapi.co/api/v2/pokemon/%s/", cCtx.Args().Get(0)))
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	var p Pokemon
+	var p *Pokemon
 
 	err = json.NewDecoder(resp.Body).Decode(&p)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	types := p.PokemonTypes
-	name := p.PokemonName
-	fmt.Printf("Name: %v\n", name)
-	fmt.Println("Type(s):")
-	for _, t := range types {
-		fmt.Println(t.Name.Name)
-	}
-
-	return nil
+	return p, nil
 }
 
-//func (p *Pokemon) Type() []string {
-//	var types []string
-//	for _, t := range p.PokemonTypes {
-//		types = append(types, t.Name.Name)
-//	}
-//
-//	return types
-//}
-//
-//func (p *Pokemon) Name() string {
-//	return p.PokemonName
-//}
-//
+func (p *Pokemon) Type() []string {
+	var types []string
+	for _, t := range p.PokemonTypes {
+		types = append(types, t.Name.Name)
+	}
+
+	return types
+}
+
+func (p *Pokemon) Name() string {
+	return p.PokemonName
+}

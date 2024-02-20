@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
 
@@ -10,13 +11,32 @@ import (
 )
 
 func main() {
+	var typeQuery string
+
 	app := &cli.App{
 		Name:  "PokéWeak",
 		Usage: "Your handy CLI pokédex!",
+
+		Flags: []cli.Flag{
+			&cli.StringFlag{
+				Name:        "types",
+				Value:       "all",
+				Usage:       "Output the type of the pokémon",
+				Destination: &typeQuery,
+			},
+		},
+
 		Action: func(cCtx *cli.Context) error {
-			err := pokemon.GetPokemon(cCtx)
+			p, err := pokemon.GetPokemon(cCtx)
 			if err != nil {
 				return err
+			}
+
+			if typeQuery == "all" {
+				fmt.Printf("Type(s): %v\n", p.Type())
+			} else {
+				fmt.Printf("Name: %v\n", p.Name())
+				fmt.Printf("Type(s): %v\n", p.Type())
 			}
 
 			return nil
