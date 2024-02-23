@@ -11,22 +11,19 @@ import (
 type PokemonInfo interface {
 	Type() string
 	Name() string
-	GetCoverage() []Coverage
+	GetDamageRealations()
+	Attacking()
+	Defending()
 }
 
 type Pokemon struct {
-	PokemonName  string  `json:"name"`
-	PokemonTypes []Types `json:"types"`
+	PokemonName  string     `json:"name"`
+	PokemonTypes []TypeList `json:"types"`
 }
 
-type Types struct {
-	Slot int      `json:"slot"`
-	Name TypeInfo `json:"type"`
-}
-
-type TypeInfo struct {
-	Name string `json:"name"`
-	Url  string `json:"url"`
+type TypeList struct {
+	Slot int        `json:"slot"`
+	Name NameAndUrl `json:"type"`
 }
 
 func GetPokemon(cCtx *cli.Context) (*Pokemon, error) {
@@ -45,13 +42,17 @@ func GetPokemon(cCtx *cli.Context) (*Pokemon, error) {
 	return p, nil
 }
 
-func (p *Pokemon) Type() []string {
-	var types []string
-	for _, t := range p.PokemonTypes {
-		types = append(types, t.Name.Name)
-	}
+func (p *Pokemon) Type() string {
+	s := "Type(s): "
 
-	return types
+	for i, t := range p.PokemonTypes {
+		if i == len(p.PokemonTypes)-1 {
+			s = s + t.Name.Name
+		} else {
+			s = s + t.Name.Name + ", "
+		}
+	}
+	return s
 }
 
 func (p *Pokemon) Name() string {
