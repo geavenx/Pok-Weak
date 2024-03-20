@@ -7,8 +7,10 @@ import (
 
 	"github.com/urfave/cli/v2"
 
-	"github.com/geavenx/pokeweak/src/internal"
+	"github.com/geavenx/pokeweak/src/pkg"
 )
+
+// TODO: Use debugger to know where the I/O file is getting the error
 
 func main() {
 
@@ -37,6 +39,7 @@ func main() {
 
 			if cCtx.Bool("types") {
 				fmt.Printf("\n%v\n", p.Type())
+
 			}
 
 			if cCtx.Bool("damage") {
