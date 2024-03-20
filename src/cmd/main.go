@@ -10,7 +10,8 @@ import (
 	"github.com/geavenx/pokeweak/src/pkg"
 )
 
-// TODO: Use debugger to know where the I/O file is getting the error
+// TODO: - Cleanup the entire codebase
+// TODO: - Implement attacking and defending methods
 
 func main() {
 
